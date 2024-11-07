@@ -1,0 +1,7 @@
+flask-sqlalchemy
+click
+prompt_toolkit
+requests
+tabulate
+art
+gunicorn
