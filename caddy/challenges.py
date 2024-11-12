@@ -91,6 +91,8 @@ def lachtan(to=1000):
 
 
 CHALLENGES = {
+    'ch00': {'name': 'TEST', 'desc': 'A test challenge. Write word "TEST" backwards.', 'tests': [('', 'TSET')]},
+
     'ch01': {
         'name': 'LACHTAN',
         'desc': '''Output the numbers from 1 to 1000, each on a separate line.  If the number is divisible by
