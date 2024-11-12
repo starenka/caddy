@@ -62,7 +62,7 @@ class Submission(db.Model):
     def get_top_by_challange(language, challenge, limit=1000):
         return db.session.execute(db.select(Submission)
                         .filter_by(tests_ok=True, language=language, challenge=challenge)
-                        .order_by(Submission.chars)
+                        .order_by('chars', 'stamp')
                         .limit(limit)).scalars().all()
 
 
