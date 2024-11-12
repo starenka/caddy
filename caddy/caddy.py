@@ -100,6 +100,10 @@ def test_implementations(path):
 
     for lang, props in LANGS.items():
         hprint(f'\n<b>Looking for {lang} challanges</b>')
+        if not impls[lang]:
+            print(' - No implementations found')
+            continue
+
         for ch, funcs in impls[lang].items():
             if challenge := CHALLENGES.get(ch):
                 if not funcs:
