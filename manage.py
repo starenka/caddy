@@ -9,7 +9,7 @@ from art import text2art
 from caddy.caddy import (SERVER, bootstrap_challanges, get_leaderboards,
                          submit_implementations, test_implementations)
 from caddy.challenges import CHALLENGES, WELCOME
-from caddy.utils import get_user
+from caddy.utils import get_user, hprint
 
 HERE = Path(__file__).resolve().parent
 PATH_CHALLENGES = HERE / 'challenges'
@@ -23,7 +23,15 @@ def cli():
 @cli.command
 @click.option('--path', help='challenges path', default=PATH_CHALLENGES)
 @click.option('--username', help='username', default=lambda: get_user())
-def test(path, username):
+def bootstrap(path, username):
+    ''' bootstraps challange files '''
+    bootstrap_challanges(Path(path))
+    hprint(f'<b>{WELCOME.format(user=username)}</b>')
+
+
+@cli.command(context_settings=dict(ignore_unknown_options=True, allow_extra_args=True))
+@click.option('--path', help='challenges path', default=PATH_CHALLENGES)
+def test(path):
     ''' discover & test challenge attempts '''
     test_implementations(Path(path))
 
@@ -38,7 +46,7 @@ def submit(path, username, server):
     submit_implementations(Path(path), username=username, server=server)
 
 
-@cli.command
+@cli.command(context_settings=dict(ignore_unknown_options=True, allow_extra_args=True))
 @click.option('--server', help='submission server URL', default=SERVER)
 @click.option('--limit', help='limit to top x', default=10, type=int)
 def leaderboards(server, limit):
@@ -48,20 +56,16 @@ def leaderboards(server, limit):
 
     for ch, lang in scores.items():
         if challenge := CHALLENGES.get(ch):
-            print(text2art(challenge['name']))
+            print('\n\n' + text2art(challenge['name']))
+            if not lang:
+                print('No submissions yet')
+                continue
+
             print(tabulate.tabulate({l: [f'{sub["chars"]}: {sub["username"]}'
                                          for sub in s]
                                      for l, s in lang.items()},
                                     headers='keys', tablefmt='outline'))
 
-
-@cli.command
-@click.option('--path', help='challenges path', default=PATH_CHALLENGES)
-@click.option('--username', help='username', default=lambda: get_user())
-def bootstrap(path, username):
-    ''' bootstraps challange files '''
-    bootstrap_challanges(Path(path))
-    print(WELCOME.format(user=username))
 
 if __name__ == '__main__':
     cli()

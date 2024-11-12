@@ -22,3 +22,5 @@ test:
 submit:
 	make manage args=submit
 	make manage args=leaderboards
+leaderboard:
+	make manage args=leaderboards
