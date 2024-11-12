@@ -52,13 +52,14 @@ def submit(path, username, server):
 def leaderboards(server, limit):
     ''' shows leaderboards '''
 
+    hprint('\n<b>CURRENT LEADERS:</b>')
     scores = get_leaderboards(server=server, limit=limit)
 
     for ch, lang in scores.items():
         if challenge := CHALLENGES.get(ch):
             print('\n\n' + text2art(challenge['name']))
             if not lang:
-                print('No submissions yet')
+                print('(no valid submissions yet)')
                 continue
 
             print(tabulate.tabulate({l: [f'{sub["chars"]}: {sub["username"]}'
