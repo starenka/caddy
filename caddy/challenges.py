@@ -91,7 +91,7 @@ def lachtan(to=1000):
 
 
 CHALLENGES = {
-    'ch00': {'name': 'TEST', 'desc': 'A test challenge. Write word "TEST" backwards.', 'tests': [('', 'TSET')]},
+    #'ch00': {'name': 'TEST', 'desc': 'A test challenge. Write word "TEST" backwards.', 'tests': [('', 'TSET')]},
 
     'ch01': {
         'name': 'LACHTAN',
