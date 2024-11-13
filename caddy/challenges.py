@@ -1,3 +1,5 @@
+import random
+
 WELCOME = r'''
 
 
@@ -417,7 +419,7 @@ Go to the store and buy some more, 99 bottles of beer on the wall.
     'ch03': {
         'name': 'NUMBERS',
         'desc': 'Covert Roman numbers (1-3999) to Arabic. The number will be passed to your function as string `s`.',
-        'tests': [(arabic2roman(i), str(i)) for i in range(1, 10)],
+        'tests': [(arabic2roman(i), str(i)) for i in random.choices(range(1, 4000), k=10)],
         },
 
 }
