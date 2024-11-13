@@ -127,6 +127,10 @@ def submit_implementations(path, username, server=SERVER):
             challenge = CHALLENGES[ch]
             for attempt in attempts:
                 try:
+                    tests_ok = LANGS[lang]['test'](attempt['body'], challenge)
+                    if not tests_ok:
+                        continue
+
                     hprint(f"Submitting <b>{attempt['name']}</b> ({lang} challenge '{challenge['name']}')")
                     resp = requests.post(f'{server}/submit',
                                          data=dict(username=username,
@@ -139,7 +143,8 @@ def submit_implementations(path, username, server=SERVER):
                     status = '<ansigreen>[P]</ansigreen>' if verdict['tests'] else '<ansired>[F]</ansired>'
                     hprint(f"   - tests: {status}, {verdict['chars']} chars")
                 except Exception as e:
-                    hprint(f'   - <ansired>Failed to submit: {traceback.format_exc()}</ansired>')
+                    exc = traceback.format_exc().replace('<', '').replace('>', '')
+                    hprint(f'   - <ansired>Failed to submit: {exc}</ansired>')
 
 
 def get_leaderboards(server=SERVER, limit=10):
