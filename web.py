@@ -1,6 +1,7 @@
 import collections
 import datetime
 import hashlib
+import os
 from pathlib import Path
 
 from flask import Flask, jsonify, request
@@ -19,7 +20,7 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{HERE / "instance" / "db.sqlite3"}'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('CADDY_DB', f'sqlite:///{HERE / "instance" / "db.sqlite3"}')
 db.init_app(app)
 
 
@@ -87,10 +88,7 @@ def submission():
         db.session.add(sub)
         db.session.commit()
 
-    top = Submission.get_submissions(challenge, language)
-
-    return jsonify({'tests': ok, 'chars': chars, **request.form,
-                    'leaders': [f'{one.username}: {one.chars} chars' for i, one in enumerate(top, 1)]})
+    return jsonify({'tests': ok, 'chars': chars, **request.form})
 
 
 @app.route('/leaderboards')
